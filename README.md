@@ -1,12 +1,17 @@
 # Games Catalog Application 
 
-Build and run the application using Gradle:
+Build and run the application using Docker:
 
 ```bash
-    ./gradlew clean build
-    docker-compose up
+  docker-compose up
 ```
 API documentation is available at [Swagger](http://localhost:8080/swagger-ui/index.html).
+
+Running tests with Testcontainers:
+
+```bash
+  ./gradlew test
+```
 
 
 This is sample application built with [Micronaut](https://micronaut.io) framework, demonstrating the use of various features such as:
