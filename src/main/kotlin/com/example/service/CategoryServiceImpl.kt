@@ -2,6 +2,9 @@ package com.example.service
 
 import com.example.controller.dto.CategoryManageDto
 import com.example.controller.dto.CategoryResponseDto
+import com.example.controller.dto.GameManageDto
+import com.example.controller.dto.GameResponseDto
+import com.example.mapper.CategorySearchResult
 import com.example.mapper.toManageDto
 import com.example.mapper.toNewEntity
 import com.example.mapper.toResponseDto
@@ -62,7 +65,11 @@ class CategoryServiceImpl : CategoryService {
     }
 
     override fun searchCategories(titles: List<String>?, gameTitleLike: String?): List<CategoryResponseDto> {
-        var query = "select c from Category c left join c.games g where 1=1"
+        var query = "select c.id, c.title, c.priority," +
+                " g.id, g.name, g.title, g.priority " +
+                "from category c " +
+                "left join category_game cg on c.id = cg.category_id " +
+                "left join game g on cg.game_id = g.id where 1=1"
         val params = mutableMapOf<String, Any>()
 
         titles?.let {
@@ -75,11 +82,29 @@ class CategoryServiceImpl : CategoryService {
         }
         query += " order by c.priority asc, g.priority asc"
 
-        return entityManager.createQuery(query, Category::class.java)
+        return entityManager.createNativeQuery(query, CategorySearchResult::class.java)
             .apply {
                 params.forEach { (key, value) -> setParameter(key, value) }
             }
             .resultList
-            .map { it.toResponseDto() }
+            .groupBy { Triple((it as CategorySearchResult).id, it.title, it.priority) }
+            .map { (key, value) ->
+                CategoryResponseDto(
+                    id = key.first,
+                    title = key.second,
+                    priority = key.third,
+                    games = value.mapNotNull {
+                        val game = it as CategorySearchResult
+                        if (game.gameId != null) {
+                            GameResponseDto(
+                                id = game.gameId,
+                                name = game.gameName ?: "",
+                                title = game.gameTitle ?: "",
+                                priority = game.gamePriority ?: 0
+                            )
+                        } else null
+                    }
+                )
+            }
     }
 }

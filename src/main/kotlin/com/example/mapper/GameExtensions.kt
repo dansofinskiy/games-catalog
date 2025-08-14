@@ -33,3 +33,18 @@ fun GameManageDto.toNewEntity(categories: MutableList<Category>): Game {
         categories = categories
     )
 }
+
+data class GameSearchResult(
+    val id: Int,
+    val name: String,
+    val title: String,
+    val priority: Int,
+    val categoryTitle: String?
+)
+
+data class GameGroupingKey(
+    val id: Int,
+    val name: String,
+    val title: String,
+    val priority: Int
+)

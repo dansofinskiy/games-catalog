@@ -114,12 +114,12 @@ class SearchOperationsTest {
         assertEquals(2, (responseFilteredByGameTitle[1] as CategoryResponseDto).priority)
         assertEquals("RPG", (responseFilteredByGameTitle[1] as CategoryResponseDto).title)
 
-        assertEquals(4, (responseFilteredByGameTitle[0] as CategoryResponseDto).games.size)
+        assertEquals(1, (responseFilteredByGameTitle[0] as CategoryResponseDto).games.size)
 
-        assertEquals(2, (responseFilteredByGameTitle[0] as CategoryResponseDto).games[1].id)
-        assertEquals("Quake", (responseFilteredByGameTitle[0] as CategoryResponseDto).games[1].name)
-        assertEquals("Quake II: The Reckoning", (responseFilteredByGameTitle[0] as CategoryResponseDto).games[1].title)
-        assertEquals(2, (responseFilteredByGameTitle[0] as CategoryResponseDto).games[1].priority)
+        assertEquals(2, (responseFilteredByGameTitle[0] as CategoryResponseDto).games[0].id)
+        assertEquals("Quake", (responseFilteredByGameTitle[0] as CategoryResponseDto).games[0].name)
+        assertEquals("Quake II: The Reckoning", (responseFilteredByGameTitle[0] as CategoryResponseDto).games[0].title)
+        assertEquals(2, (responseFilteredByGameTitle[0] as CategoryResponseDto).games[0].priority)
     }
 
     @Test
@@ -135,15 +135,15 @@ class SearchOperationsTest {
         assertEquals(2, (responseFilteredByTitleAndGameTitle[0] as CategoryResponseDto).priority)
         assertEquals("RPG", (responseFilteredByTitleAndGameTitle[0] as CategoryResponseDto).title)
 
-        assertEquals(2, (responseFilteredByTitleAndGameTitle[0] as CategoryResponseDto).games.size)
+        assertEquals(1, (responseFilteredByTitleAndGameTitle[0] as CategoryResponseDto).games.size)
 
-        assertEquals(3, (responseFilteredByTitleAndGameTitle[0] as CategoryResponseDto).games[1].id)
-        assertEquals("Half-Life", (responseFilteredByTitleAndGameTitle[0] as CategoryResponseDto).games[1].name)
+        assertEquals(3, (responseFilteredByTitleAndGameTitle[0] as CategoryResponseDto).games[0].id)
+        assertEquals("Half-Life", (responseFilteredByTitleAndGameTitle[0] as CategoryResponseDto).games[0].name)
         assertEquals(
             "Half-Life 3: Episode One",
-            (responseFilteredByTitleAndGameTitle[0] as CategoryResponseDto).games[1].title
+            (responseFilteredByTitleAndGameTitle[0] as CategoryResponseDto).games[0].title
         )
-        assertEquals(3, (responseFilteredByTitleAndGameTitle[0] as CategoryResponseDto).games[1].priority)
+        assertEquals(3, (responseFilteredByTitleAndGameTitle[0] as CategoryResponseDto).games[0].priority)
     }
 
     @Test

@@ -37,13 +37,13 @@ fun CategoryManageDto.toNewEntity(games: MutableList<Game>): Category {
         games = games
     )
 }
-//
-//fun Category.updateFromDto(dto: CategoryManageDto, games: MutableList<Game>) {
-//    this.title = dto.title
-//    this.priority = dto.priority
-//    val toDeleteLinks = this.games - games
-//    this.games = games.toMutableList()
-//
-//    games.forEach { it.categories.add(this) }
-//    toDeleteLinks.forEach { it.categories.remove(this) }
-//}
+
+data class CategorySearchResult(
+    val id: Int,
+    val title: String,
+    val priority: Int,
+    val gameId: Int?,
+    val gameName: String?,
+    val gameTitle: String?,
+    val gamePriority: Int?
+)

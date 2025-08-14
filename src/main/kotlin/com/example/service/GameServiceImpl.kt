@@ -3,10 +3,10 @@ package com.example.service
 import com.example.controller.dto.GameManageDto
 import com.example.controller.dto.GameResponseDto
 import com.example.controller.dto.GameUpdateDto
+import com.example.mapper.GameGroupingKey
+import com.example.mapper.GameSearchResult
 import com.example.mapper.toManageDto
 import com.example.mapper.toNewEntity
-import com.example.mapper.toResponseDto
-import com.example.model.Game
 import com.example.repository.CategoryRepository
 import com.example.repository.GameRepository
 import io.micronaut.http.HttpStatus
@@ -63,7 +63,9 @@ class GameServiceImpl : GameService {
     }
 
     override fun searchGames(categories: List<String>?, titleLike: String?): List<GameResponseDto> {
-        var query = "select g from Game g left join g.categories c where 1=1"
+        var query = "select g.id, g.name, g.title, g.priority, c.title from game g " +
+                "left join category_game cg on g.id = cg.game_id " +
+                "left join category c on cg.category_id = c.id where 1=1"
         val params = mutableMapOf<String, Any>()
         categories?.let {
             query += " and c.title in :categories"
@@ -75,10 +77,19 @@ class GameServiceImpl : GameService {
         }
         query += " order by g.priority asc, c.priority asc"
 
-        return entityManager.createQuery(query, Game::class.java)
+        return entityManager.createNativeQuery(query, GameSearchResult::class.java)
             .apply {
                 params.forEach { (key, value) -> setParameter(key, value) }
             }.resultList
-            .map { it.toResponseDto() }
+            .groupBy { GameGroupingKey((it as GameSearchResult).id, it.name, it.title, it.priority) }
+            .map { (game, results) ->
+                GameResponseDto(
+                    id = game.id,
+                    name = game.name,
+                    title = game.title,
+                    priority = game.priority,
+                    categories = results.mapNotNull { (it as GameSearchResult).categoryTitle }
+                )
+            }
     }
 }

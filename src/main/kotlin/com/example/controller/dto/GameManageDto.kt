@@ -16,3 +16,4 @@ data class GameManageDto(
     @Schema(name = "Game Categories", required = false, example = "[1, 2, 3]")
     var categories: List<Int> = emptyList()
 )
+
