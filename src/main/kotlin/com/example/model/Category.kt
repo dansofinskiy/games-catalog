@@ -6,13 +6,14 @@ import jakarta.persistence.ForeignKey
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
+import jakarta.persistence.Index
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.JoinTable
 import jakarta.persistence.ManyToMany
 import jakarta.persistence.Table
 
 @Entity
-@Table(name = "category")
+@Table(name = "category", indexes = [Index(name = "idx_category_title", columnList = "title")])
 data class Category(
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
