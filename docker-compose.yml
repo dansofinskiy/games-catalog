@@ -1,0 +1,27 @@
+version: '3.8'
+services:
+  db:
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: pass123
+      POSTGRES_DB: gamesdatabase
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  app:
+    build: .
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      - DATASOURCES_DEFAULT_URL=jdbc:postgresql://db:5432/gamesdatabase
+      - DATASOURCES_DEFAULT_USERNAME=admin
+      - DATASOURCES_DEFAULT_PASSWORD=pass123
+
+volumes:
+  postgres_data:
